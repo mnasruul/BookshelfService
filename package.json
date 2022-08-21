@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@hapi/hapi": "^20.2.2",
-    "nanoid": "^4.0.0"
+    "nanoid": "^3.3.4"
   },
   "devDependencies": {
     "eslint": "^8.22.0",
@@ -20,6 +20,10 @@
     "type": "git",
     "url": "git+https://github.com/mnasruul/BookshelfService.git"
   },
+  "bugs": {
+    "url": "https://github.com/mnasruul/BookshelfService/issues"
+  },
+  "homepage": "https://github.com/mnasruul/BookshelfService#readme",
   "keywords": [],
   "author": "",
   "license": "ISC"
