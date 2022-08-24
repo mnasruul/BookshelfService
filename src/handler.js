@@ -1,28 +1,38 @@
 const {nanoid} = require('nanoid');
 const books = require('./books');
 const addBookHandler = (request, h) => {
-  const {name, year, author, summary, publisher, pageCount, readPage, reading} = request.payload;
+  const {
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
+  } = request.payload;
   const id = nanoid(16);
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
   let finished = false;
   if (name == null) {
     const response = h.response({
-      "status": "fail",
-      "message": "Gagal menambahkan buku. Mohon isi nama buku"
+      'status': 'fail',
+      'message': 'Gagal menambahkan buku. Mohon isi nama buku',
     });
     response.code(400);
     return response;
   }
-  if(readPage > pageCount){
+  if (readPage > pageCount) {
     const response = h.response({
-      "status": "fail",
-      "message": "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount"
+      'status': 'fail',
+      // eslint-disable-next-line max-len
+      'message': 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
     });
     response.code(400);
     return response;
   }
-  if (pageCount === readPage){
+  if (pageCount === readPage) {
     finished = true;
   }
   const newBook = {
@@ -35,8 +45,8 @@ const addBookHandler = (request, h) => {
     pageCount,
     readPage,
     finished,
-    reading, 
-    insertedAt, 
+    reading,
+    insertedAt,
     updatedAt,
   };
   books.push(newBook);
@@ -53,34 +63,41 @@ const addBookHandler = (request, h) => {
     return response;
   }
   const response = h.response({
-    "status": "error",
-    "message": "Buku gagal ditambahkan"
+    'status': 'error',
+    'message': 'Buku gagal ditambahkan',
   });
   response.code(500);
   return response;
 };
 
 const getAllBooksHandler = (request, h) => {
-  let Books = books
+  let Books = books;
   const {name, reading, finished} = request.query;
-  if(name != null){
-    Books = Books.filter((n) => n.name == name);
+  if (name != null) {
+    // eslint-disable-next-line max-len
+    Books = Books.filter((n) => n.name.toLowerCase().includes(name.toLowerCase()));
   }
-  if(reading != null){
+  if (reading != null) {
     if (reading == 1) {
       Books = Books.filter((n) => n.reading === true);
-    } else if(reading == 0){
-      Books = Books.filter((n) => n.reading === true);
+    } else if (reading == 0) {
+      Books = Books.filter((n) => n.reading === false);
     }
   }
-  if(finished != null){
+  if (finished != null) {
     if (finished == 1) {
       Books = Books.filter((n) => n.finished === true);
-    } else if(finished == 0){
-      Books = Books.filter((n) => n.finished === true);
+    } else if (finished == 0) {
+      Books = Books.filter((n) => n.finished === false);
     }
   }
-   Books =  Books.map((item) =>  { return {id: item.id,name: item.name,publisher: item.publisher}})
+  Books = Books.map((item) => {
+    return {
+      id: item.id,
+      name: item.name,
+      publisher: item.publisher,
+    };
+  });
   const response = h.response({
     status: 'success',
     data: {
@@ -112,27 +129,37 @@ const getBookByIdHandler = (request, h) => {
 
 const editBookByIdHandler = (request, h) => {
   const {bookId} = request.params;
-  const {name, year, author, summary, publisher, pageCount, readPage, reading} = request.payload;
+  const {
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
+  } = request.payload;
   const updatedAt = new Date().toISOString();
   const index = books.findIndex((book) => book.id === bookId);
   let finished = false;
   if (name == null) {
     const response = h.response({
-      "status": "fail",
-      "message": "Gagal memperbarui buku. Mohon isi nama buku"
+      'status': 'fail',
+      'message': 'Gagal memperbarui buku. Mohon isi nama buku',
     });
     response.code(400);
     return response;
   }
-  if(readPage > pageCount){
+  if (readPage > pageCount) {
     const response = h.response({
-      "status": "fail",
-      "message": "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount"
+      'status': 'fail',
+      // eslint-disable-next-line max-len
+      'message': 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
     });
     response.code(400);
     return response;
   }
-  if (pageCount === readPage){
+  if (pageCount === readPage) {
     finished = true;
   }
   if (index !== -1) {
